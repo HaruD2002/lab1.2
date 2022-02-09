@@ -6,7 +6,7 @@
     </context-param>
     <context-param>
         <param-name>pass</param-name>
-        <param-value>12345</param-value>
+        <param-value>12345a</param-value>
     </context-param>
     <servlet>
         <servlet-name>FirstServlet</servlet-name>

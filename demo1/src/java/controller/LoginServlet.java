@@ -7,6 +7,8 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name="LoginServlet", urlPatterns={"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
-
+    //1 nubmer 1 character  
+        
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -51,17 +54,26 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {           
+            throws ServletException, IOException { 
+            PrintWriter out = response.getWriter(); 
             String u =request.getParameter("user");
-            String p=request.getParameter("pass");    
+            
+            String p=request.getParameter("pass");
+            Pattern pattern = Pattern.compile("[^A-Za-z0-9]");
+            Matcher match = pattern.matcher(p);
+            boolean val = match.find();
             String user = getServletContext().getInitParameter("user");
-            String pass = getServletContext().getInitParameter("pass");         
-            if(p.equals(pass) && u.equals(user)){
-            RequestDispatcher rd = request.getRequestDispatcher("/WelcomServlet");
-            rd.forward(request, response);
+            String pass = getServletContext().getInitParameter("pass");  
+            
+            if(val == true){
+                if(p.equals(pass) && u.equals(user)){
+                    RequestDispatcher rd = request.getRequestDispatcher("/WelcomServlet");
+                    rd.forward(request, response);
             }
-            else
-            response.sendRedirect("index.html");
+                else{
+                    out.println("<h1>not right </h1>");
+                }
+            }
              
     }
 

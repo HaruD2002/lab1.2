@@ -7,6 +7,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,37 +33,67 @@ public class ComputeServlet extends HttpServlet {
             throws ServletException, IOException {
             response.setContentType("text/html;charset=UTF-8");
             //float fNum = Float.parseFloat(firstNum);
-            try{
-            PrintWriter pw = response.getWriter();
-            
+            PrintWriter out = response.getWriter();
+          
             String first = request.getParameter("First");         
             float fnum = Float.parseFloat(first);
             
             String second = request.getParameter("Second");
-            float snum = Float.parseFloat(second);         
-            Object begin = request.getAttribute("Result");
-            float otherresult = Float.parseFloat("begin");
-            float result =0;
+            float snum = Float.parseFloat(second);   
+            
+            String init_result  = request.getParameter("Result");
+            float result = Float.parseFloat(init_result);          
+            
             String operators = request.getParameter("operators");
             
-            if(operators.equals("+")){
-                result = fnum + snum;
-                RequestDispatcher rd=request.getRequestDispatcher("ComputeServlet");
-                
-            }
-            else if(operators.equals("-")){
-                result = fnum - snum;
-            }
-            else if(operators.equals("*")){
-                result = fnum * snum;
-            }           
-            else if(operators.equals("/")){
-                result = fnum / snum;
-            }
-            }catch(Exception e){
-                response.sendRedirect("index.html");
+           
+            switch(operators){
+                case "+":
+                    result = fnum + snum;
+                    break;
+                case "-":
+                    result = fnum - snum;
+                    break;
+                case "*":
+                    result = fnum * snum;
+                    break;    
+               case "/":
+                    result = fnum / snum;
+                    break;
             }
             
+            
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");                 
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<table");
+            out.println("<tr>");
+            out.println("<td>First</td>");
+            out.println("<td><input readonly type = \"summit\" value= " +fnum +"></td>");
+            out.println("</tr>");
+            out.println("<tr>");
+            out.println("<td> Second</td><td><input readonly type=\"text\" value= "+snum+"> </td>");
+            out.println("</tr>");
+            out.println("<tr>");
+            out.println("<td>Operator</td>");
+            out.println("<td>");
+            out.println("<select disabled>");
+            out.println("<option>"+operators+"</option>");
+            out.println("<option>"+operators+"</option>");
+            out.println("<option>"+operators+"</option>");
+            out.println("<option>"+operators+"</option>");
+            out.println("</select>");
+            out.println("</td>");
+            out.println("</tr>");
+            out.println("<tr><td></td> <td><input type=\"text\" value = \"=\" readonly</td></tr>");
+            out.println("<tr><td>Result</td><td><input readonly type = \"text\" name= \"Result\" value="+result+"></td></tr>");
+            out.println("</table>");
+            out.println("<br><a href = \"index.html\"><input type= \"button\" value=\"Return\"/> </a> ");
+            out.println("</body>");
+            out.println("</html>");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
